@@ -1,4 +1,6 @@
 function expandedForm(num) {
+    console.log('strut');
+
     return num.toString()
         .split('')
         .map((element, index, array) => element * Math.pow(10, (array.length - index - 1)))
