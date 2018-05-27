@@ -1,45 +1,50 @@
 function fight(robot1, robot2, tactics) {
-
     function attack(target, tactic) {
         var damage = tactics[tactic];
         target.health -= damage;
+        console.log(target.name + " was attacked with " + damage + " damage");
     }
-    var first = robot2.speed > robot1.speed ? robot1 : robot2;
-    var second = first == robot1 ? robot2 : robot1;
 
+    //Determine who goes first.
+    var robots = robot2.speed > robot1.speed ? [robot2, robot1] : [robot1, robot2];
+    console.log(robots);
+
+    //Start the battle
     var winner = null;
     var round = 0;
-
     while (winner == null) {
-        if (round > first.tactics.length && round > second.tactics.length) {
-            if (first.health == second.health) {
+        //Handle the event that nobody has tactics left
+        if (round >= robot1.tactics.length && round >= robot2.tactics.length) {
+            console.log("No robot have tactics left");
+            if (robot1.health == robot2.health) {
                 winner = "draw";
             } else {
-                winner = first.health > second.health ? first : second;
+                winner = robot1.health > robot2.health ? robot1 : robot2;
             }
-            return;
-        }
-        if (round < first.tactics.length)
-            attack(second, first.tactics[round]);
-        if (second.health <= 0) {
-            winner = first;
-            return;
+            break;
         }
 
-        if (round < second.tactics.length)
-            attack(first, second.tactics[round]);
-        if (second.health <= 0) {
-            winner = first;
-            return;
+        //Let the robots attack eachother
+        for (let i = 0; i < 2; i++) {
+            const attacker = robots[i];
+            const target = robots[Math.abs(i - 1)];
+
+            if (round < attacker.tactics.length)
+                attack(target, attacker.tactics[round]);
+            if (target.health <= 0) {
+                winner = attacker;
+                console.log(target.name + " died");
+                break;
+            }
         }
+        round++
     }
 
+    //Print out the winner
     if (winner == "draw") {
         return "The fight was a draw.";
     } else {
         return winner.name + " has won the fight.";
     }
 
-    round++
 }
-
