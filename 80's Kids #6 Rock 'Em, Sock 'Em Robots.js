@@ -1,3 +1,4 @@
+//test
 function fight(robot1, robot2, tactics) {
     function attack(target, tactic) {
         var damage = tactics[tactic];
