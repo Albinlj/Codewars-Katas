@@ -1,27 +1,15 @@
-function deepCompare(o1, o2) {
-    if (typeof o1 != typeof o2)
-        return false;
+function deepCompare(ob0, ob1) {
+    if (ob0 === ob1) return true;
+    if (ob0 == null || ob1 == null) return false;
+    if (typeof ob0 !== "object") return false;
+    if (Array.isArray(ob0) !== Array.isArray(ob1)) return false;
+    let ob0keys = Object.keys(ob0);
+    if (ob0keys.length !== Object.keys(ob1).length) return false;
+    return ob0keys.every((val) => {
+        return deepCompare(ob0[val], ob1[val])
+    })
+}
 
-    for (var key in o1) {
-        //See if the property is a property of the object, and not of its prototype.
-        if (o1.hasOwnProperty(key)) {
-            if (o1[key] === null)
-                return false;
-            let valType = typeof (o1[key].valueOf());
-            //Call recursively if the keyvalue is an object
-            if (valType === "object") {
-                // if (Array.isArray(o1[key]))
-                // ;
-                if (!deepCompare(o1[key], o2[key]))
-                    return false;
-            } else {
-                if (o1[key] !== o2[key] || valType === "undefined")
-                    return false;
-            }
-        }
-    }
-    return true;
-};
 
 let a = {
     key0: null,
