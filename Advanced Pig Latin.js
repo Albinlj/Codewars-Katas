@@ -3,16 +3,15 @@ function translate(sentence) {
         .split(/([\W\s]+)/)
         .reduce((tot, val, i, arr) => {
             if (/[a-zA-Z]/.test(val)) {
-                valArray = val.split('');
-                for (let i = 0; i < valArray.length; i++) {
-                    if (/[AaEeIiOoUu]/.test(valArray[i])) {
+                for (let i = 0; i < val.length; i++) {
+                    if (/[AaEeIiOoUu]/.test(val.charAt(i))) {
                         if (i == 0) {
                             val = val.concat('way');
                             break;
                         } else {
-                            let isUppercase = valArray[0] === valArray[0].toUpperCase();
+                            let isUppercase = val.charAt(0) === val.charAt(0).toUpperCase();
                             val = [
-                                isUppercase ? valArray[i].toUpperCase() : valArray[i],
+                                isUppercase ? val.charAt(i).toUpperCase() : val.charAt(i),
                                 val.slice(i + 1),
                                 val.slice(0, i).toLowerCase(),
                                 "ay"
@@ -25,8 +24,6 @@ function translate(sentence) {
             return tot.concat(val);
         }, "");
 };
-
-
 
 console.log(translate('hello'));
 console.log(translate('hello world'));
