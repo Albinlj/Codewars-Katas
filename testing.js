@@ -1,0 +1,1 @@
+console.log(/[A-Z]*[a-z]/.test(' '))
